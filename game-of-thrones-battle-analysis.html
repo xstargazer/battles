@@ -11839,9 +11839,14 @@ note: 注释，字符变量。</code></pre>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="&#25552;&#20986;&#38382;&#39064;">&#25552;&#20986;&#38382;&#39064;<a class="anchor-link" href="#&#25552;&#20986;&#38382;&#39064;">&#182;</a></h2><p>在此项目中，你将以一名数据分析师的身份执行数据的探索性分析。你将了解数据分析过程的基本流程。在你分析数据之前，请先思考几个你需要理解的关于这些战斗的问题，例如，哪一个区域发生了最多的战争？哪一个国王获得了最多的胜利？战争的胜利与否受那些关键因素的影响？</p>
-<p><strong>问题</strong>：哪一个区域发生了最多的战争？Robb Stark在哪个区域获得的胜利最多？攻防双方的军队规模是否有关系？
+<p><strong>问题</strong>：请写下你感兴趣的问题，请确保这些问题能够由现有的数据进行回答。
 （为了确保学习的效果，请确保你的数据分析报告中能够包含2幅可视化和1个相关性分析。）</p>
-<p><strong>答案</strong>：将此文本替换为你的回答！</p>
+<p><strong>答案</strong>：</p>
+<ul>
+<li>哪一个区域发生了最多的战争？</li>
+<li>Robb Stark在哪个区域获得的胜利最多？</li>
+<li>攻防双方的军队规模是否有关系？</li>
+</ul>
 <p>在提出了问题之后，我们将开始导入数据，并对数据进行探索性分析，来回答上面提出的问题。</p>
 
 </div>
@@ -11857,13 +11862,16 @@ note: 注释，字符变量。</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[141]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TO DO: load pacakges</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11873,7 +11881,7 @@ note: 注释，字符变量。</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[142]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TO DO: load the dataset</span>
@@ -11887,7 +11895,7 @@ note: 注释，字符变量。</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[143]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TO DO: check the dataset general info</span>
@@ -12227,12 +12235,16 @@ note: 注释，字符变量。</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="prompt input_prompt">In&nbsp;[144]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TO DO: clean the data (optional: only there are problems)</span>
 <span class="c1"># 重复值检测</span>
-<span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span>
+<span class="n">data_clean</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="nb">sum</span><span class="p">(</span><span class="n">data_clean</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span>
+
+<span class="n">data_clean</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -12245,13 +12257,356 @@ note: 注释，字符变量。</code></pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[92]:</div>
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 38 entries, 0 to 37
+Data columns (total 25 columns):
+name                  38 non-null object
+year                  38 non-null int64
+battle_number         38 non-null int64
+attacker_king         36 non-null object
+defender_king         35 non-null object
+attacker_1            38 non-null object
+attacker_2            10 non-null object
+attacker_3            3 non-null object
+attacker_4            2 non-null object
+defender_1            37 non-null object
+defender_2            2 non-null object
+defender_3            0 non-null float64
+defender_4            0 non-null float64
+attacker_outcome      37 non-null object
+battle_type           37 non-null object
+major_death           37 non-null float64
+major_capture         37 non-null float64
+attacker_size         24 non-null float64
+defender_size         19 non-null float64
+attacker_commander    37 non-null object
+defender_commander    28 non-null object
+summer                37 non-null float64
+location              37 non-null object
+region                38 non-null object
+note                  5 non-null object
+dtypes: float64(7), int64(2), object(16)
+memory usage: 7.5+ KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[145]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># 删除过多缺失值的字段</span>
+<span class="n">feature_drop</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;attacker_2&#39;</span><span class="p">,</span><span class="s1">&#39;attacker_3&#39;</span><span class="p">,</span><span class="s1">&#39;attacker_4&#39;</span><span class="p">,</span><span class="s1">&#39;defender_2&#39;</span><span class="p">,</span><span class="s1">&#39;defender_3&#39;</span><span class="p">,</span><span class="s1">&#39;defender_4&#39;</span><span class="p">,</span><span class="s1">&#39;note&#39;</span><span class="p">]</span>
+<span class="n">data_clean</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">feature_drop</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">data_clean</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 38 entries, 0 to 37
+Data columns (total 18 columns):
+name                  38 non-null object
+year                  38 non-null int64
+battle_number         38 non-null int64
+attacker_king         36 non-null object
+defender_king         35 non-null object
+attacker_1            38 non-null object
+defender_1            37 non-null object
+attacker_outcome      37 non-null object
+battle_type           37 non-null object
+major_death           37 non-null float64
+major_capture         37 non-null float64
+attacker_size         24 non-null float64
+defender_size         19 non-null float64
+attacker_commander    37 non-null object
+defender_commander    28 non-null object
+summer                37 non-null float64
+location              37 non-null object
+region                38 non-null object
+dtypes: float64(5), int64(2), object(11)
+memory usage: 5.4+ KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[146]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data_clean</span><span class="p">[</span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;attacker_king&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="bp">True</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[146]:</div>
 
 
 
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
 
-<div class="output_text output_subarea output_execute_result">
-<pre>0</pre>
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>year</th>
+      <th>battle_number</th>
+      <th>attacker_king</th>
+      <th>defender_king</th>
+      <th>attacker_1</th>
+      <th>defender_1</th>
+      <th>attacker_outcome</th>
+      <th>battle_type</th>
+      <th>major_death</th>
+      <th>major_capture</th>
+      <th>attacker_size</th>
+      <th>defender_size</th>
+      <th>attacker_commander</th>
+      <th>defender_commander</th>
+      <th>summer</th>
+      <th>location</th>
+      <th>region</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>22</th>
+      <td>Battle of the Burning Septry</td>
+      <td>299</td>
+      <td>23</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Brotherhood without Banners</td>
+      <td>Brave Companions</td>
+      <td>win</td>
+      <td>pitched battle</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>The Riverlands</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Sack of Saltpans</td>
+      <td>300</td>
+      <td>30</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Brave Companions</td>
+      <td>NaN</td>
+      <td>win</td>
+      <td>razing</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Rorge</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>Saltpans</td>
+      <td>The Riverlands</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>有两个缺失值，把缺失值删除</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[147]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data_clean</span><span class="p">[</span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;defender_king&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="bp">True</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[147]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>year</th>
+      <th>battle_number</th>
+      <th>attacker_king</th>
+      <th>defender_king</th>
+      <th>attacker_1</th>
+      <th>defender_1</th>
+      <th>attacker_outcome</th>
+      <th>battle_type</th>
+      <th>major_death</th>
+      <th>major_capture</th>
+      <th>attacker_size</th>
+      <th>defender_size</th>
+      <th>attacker_commander</th>
+      <th>defender_commander</th>
+      <th>summer</th>
+      <th>location</th>
+      <th>region</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>22</th>
+      <td>Battle of the Burning Septry</td>
+      <td>299</td>
+      <td>23</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Brotherhood without Banners</td>
+      <td>Brave Companions</td>
+      <td>win</td>
+      <td>pitched battle</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>The Riverlands</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Retaking of Harrenhal</td>
+      <td>299</td>
+      <td>25</td>
+      <td>Joffrey/Tommen Baratheon</td>
+      <td>NaN</td>
+      <td>Lannister</td>
+      <td>Brave Companions</td>
+      <td>win</td>
+      <td>pitched battle</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Gregor Clegane</td>
+      <td>Vargo Hoat</td>
+      <td>1.0</td>
+      <td>Harrenhal</td>
+      <td>The Riverlands</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Sack of Saltpans</td>
+      <td>300</td>
+      <td>30</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Brave Companions</td>
+      <td>NaN</td>
+      <td>win</td>
+      <td>razing</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Rorge</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>Saltpans</td>
+      <td>The Riverlands</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -12262,12 +12617,321 @@ note: 注释，字符变量。</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="prompt input_prompt">In&nbsp;[148]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data_robert</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># 把攻防双方只要有一方国王缺失的字段，就删掉该行</span>
+<span class="n">dc_index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;defender_king&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">data_clean</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dc_index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
 
-<span class="n">data_robert</span><span class="p">[</span><span class="s1">&#39;rb_outcome&#39;</span><span class="p">]</span>
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="&#25968;&#25454;&#25506;&#32034;&#20998;&#26512;">&#25968;&#25454;&#25506;&#32034;&#20998;&#26512;<a class="anchor-link" href="#&#25968;&#25454;&#25506;&#32034;&#20998;&#26512;">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[172]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># In exploratory data analysis, please make sure of using statistics and visualizations</span>
+<span class="c1"># 关于第一个问题，哪个区域发生的战争最多</span>
+<span class="n">region_count</span><span class="o">=</span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">region_count</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">region_count</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;region_count&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[172]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[Text(0,0,u&#39;The Riverlands&#39;),
+ Text(0,0,u&#39;The North&#39;),
+ Text(0,0,u&#39;The Stormlands&#39;),
+ Text(0,0,u&#39;The Westerlands&#39;),
+ Text(0,0,u&#39;The Reach&#39;),
+ Text(0,0,u&#39;The Crownlands&#39;),
+ Text(0,0,u&#39;Beyond the Wall&#39;)]</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+AElFTkSuQmCC
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[150]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># 关于第二个问题，Robb Stark在哪个区域胜利最多</span>
+<span class="c1"># 先对数据集进行处理data.info()</span>
+
+
+<span class="n">data_robert_at</span><span class="o">=</span><span class="n">data_clean</span><span class="p">[</span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;attacker_king&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Robb Stark&#39;</span><span class="p">]</span>
+<span class="n">data_robert_df</span><span class="o">=</span><span class="n">data_clean</span><span class="p">[</span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;defender_king&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Robb Stark&#39;</span><span class="p">]</span>
+
+<span class="c1">#新增一列，代表Robb Stark的输赢</span>
+<span class="n">data_robert_at</span><span class="p">[</span><span class="s1">&#39;rb_outcome&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">data_robert_at</span><span class="p">[</span><span class="s1">&#39;attacker_outcome&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="s1">&#39;win&#39;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">data_robert_df</span><span class="p">[</span><span class="s1">&#39;rb_outcome&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">data_robert_df</span><span class="p">[</span><span class="s1">&#39;attacker_outcome&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="mi">0</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="s1">&#39;win&#39;</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">data_robert</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data_robert_at</span><span class="p">,</span><span class="n">data_robert_df</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">data_robert</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -12286,20 +12950,14 @@ note: 注释，字符变量。</code></pre>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
 Int64Index: 24 entries, 3 to 36
-Data columns (total 26 columns):
+Data columns (total 19 columns):
 name                  24 non-null object
 year                  24 non-null int64
 battle_number         24 non-null int64
 attacker_king         24 non-null object
 defender_king         24 non-null object
 attacker_1            24 non-null object
-attacker_2            7 non-null object
-attacker_3            0 non-null object
-attacker_4            0 non-null object
 defender_1            24 non-null object
-defender_2            0 non-null object
-defender_3            0 non-null float64
-defender_4            0 non-null float64
 attacker_outcome      24 non-null object
 battle_type           24 non-null object
 major_death           24 non-null float64
@@ -12311,306 +12969,9 @@ defender_commander    20 non-null object
 summer                23 non-null float64
 location              24 non-null object
 region                24 non-null object
-note                  5 non-null object
 rb_outcome            24 non-null int64
-dtypes: float64(7), int64(3), object(16)
-memory usage: 5.1+ KB
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[66]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>3     0
-4     1
-5     1
-10    1
-14    1
-17    1
-18    1
-20    1
-21    0
-26    1
-0     0
-1     0
-2     0
-6     0
-7     0
-8     0
-9     0
-11    0
-13    0
-16    1
-23    0
-25    0
-35    0
-36    0
-Name: rb_outcome, dtype: int64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#25968;&#25454;&#25506;&#32034;&#20998;&#26512;">&#25968;&#25454;&#25506;&#32034;&#20998;&#26512;<a class="anchor-link" href="#&#25968;&#25454;&#25506;&#32034;&#20998;&#26512;">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[67]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># In exploratory data analysis, please make sure of using statistics and visualizations</span>
-<span class="c1"># 关于第一个问题，哪个区域发生的战争最多</span>
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[67]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xba9aa20&gt;</pre>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[89]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># 关于第二个问题，Robb Stark在哪个区域胜利最多</span>
-<span class="c1"># 先对数据集进行处理data.info()</span>
-<span class="n">data_robert_at</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;attacker_king&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Robb Stark&#39;</span><span class="p">]</span>
-<span class="n">data_robert_df</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;defender_king&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Robb Stark&#39;</span><span class="p">]</span>
-
-<span class="c1">#新增一列，代表Robb Stark的输赢</span>
-<span class="n">data_robert_at</span><span class="p">[</span><span class="s1">&#39;rb_outcome&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">data_robert_at</span><span class="p">[</span><span class="s1">&#39;attacker_outcome&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="s1">&#39;win&#39;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">data_robert_df</span><span class="p">[</span><span class="s1">&#39;rb_outcome&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">data_robert_df</span><span class="p">[</span><span class="s1">&#39;attacker_outcome&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="mi">0</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="s1">&#39;win&#39;</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="n">data_robert</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data_robert_at</span><span class="p">,</span><span class="n">data_robert_df</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>C:\Users\Administrator.USER-20150106SX\Anaconda2\lib\site-packages\ipykernel_launcher.py:7: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-  import sys
-C:\Users\Administrator.USER-20150106SX\Anaconda2\lib\site-packages\ipykernel_launcher.py:8: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-  
+dtypes: float64(5), int64(3), object(11)
+memory usage: 3.8+ KB
 </pre>
 </div>
 </div>
@@ -12621,7 +12982,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In&nbsp;[151]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">data_robert</span><span class="p">[</span><span class="n">data_robert</span><span class="p">[</span><span class="s1">&#39;rb_outcome&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
@@ -12637,13 +12998,13 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[79]:</div>
+<div class="prompt output_prompt">Out[151]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xcdca2b0&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xd218240&gt;</pre>
 </div>
 
 </div>
@@ -12762,11 +13123,11 @@ neMnAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[153]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># 关于问题三，攻防双方的军队规模是否有相关关系</span>
-<span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;attacker_size&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;defender_size&#39;</span><span class="p">,</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">)</span>
+<span class="n">data_clean</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;attacker_size&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;defender_size&#39;</span><span class="p">,</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12779,13 +13140,13 @@ neMnAAAAAElFTkSuQmCC
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[72]:</div>
+<div class="prompt output_prompt">Out[153]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xbd46ba8&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xd847198&gt;</pre>
 </div>
 
 </div>
@@ -12967,11 +13328,11 @@ RK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[109]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># 去除异常值，然后查看相关系数</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;attacker_size&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80000</span><span class="p">][[</span><span class="s1">&#39;attacker_size&#39;</span><span class="p">,</span><span class="s1">&#39;defender_size&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">data_clean</span><span class="p">[</span><span class="n">data_clean</span><span class="p">[</span><span class="s1">&#39;attacker_size&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80000</span><span class="p">][[</span><span class="s1">&#39;attacker_size&#39;</span><span class="p">,</span><span class="s1">&#39;defender_size&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -12984,7 +13345,7 @@ RK5CYII=
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[90]:</div>
+<div class="prompt output_prompt">Out[109]:</div>
 
 
 
